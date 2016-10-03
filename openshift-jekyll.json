@@ -1,0 +1,25 @@
+{
+  "kind": "ImageStream",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "jekyll"
+  },
+  "spec": {
+    "tags": [
+      {
+        "name": "latest",
+        "annotations": {
+          "description": "Build and run Jekyll sites",
+          "iconClass": "fa fa-flask",
+          "tags": "builder,jekyll",
+          "supports": "jekyll:3.2.1,jekyll",
+          "version": "3.2.1"
+        },
+        "from": {
+          "kind": "DockerImage",
+          "name": "computersciencehouse/jekyll-centos7:latest"
+        }
+      }
+    ]
+  }
+}

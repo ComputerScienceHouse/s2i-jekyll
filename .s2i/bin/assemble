@@ -1,0 +1,24 @@
+#!/bin/bash -e
+#
+# S2I assemble script for the 'jekyll-centos7' image.
+# The 'assemble' script builds your application source so that it is ready to run.
+#
+# For more information refer to the documentation:
+#	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
+
+if [[ "$1" == "-h" ]]; then
+	# If the 'jekyll-centos7' assemble script is executed with '-h' flag,
+	# print the usage.
+	exec /usr/libexec/s2i/usage
+fi
+
+DESTINATION=$(pwd)
+
+echo "---> Installing dependencies with Bundler..."
+cd /tmp/src
+bundle install
+
+echo "---> Building site with Jekyll..."
+jekyll build --destination ${DESTINATION}
+
