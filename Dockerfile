@@ -23,23 +23,23 @@ RUN gem install jekyll bundler
 # image sets io.openshift.s2i.scripts-url label that way
 COPY ./.s2i/bin/ /usr/libexec/s2i
 
+# Create directories for nginx
+RUN mkdir -p /opt/app-root/etc/nginx && \
+mkdir -p /opt/app-root/var/run/nginx && \
+mkdir -p /opt/app-root/var/log/nginx && \
+mkdir -p /opt/app-root/var/lib/nginx/tmp
+
 # Copy the nginx configuration
-COPY ./etc/ /etc
+COPY ./etc /opt/app-root/etc
 
 # Link the nginx logs to stdout/stderr
-RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
-ln -sf /dev/stderr /var/log/nginx/error.log
+RUN ln -sf /dev/stdout /var/log/nginx/error.log && \
+ln -sf /dev/stdout /opt/app-root/var/log/nginx/access.log && \
+ln -sf /dev/stderr /opt/app-root/var/log/nginx/error.log
 
-# Create the nginx pid directory and chown all nginx directories to the run user
-RUN mkdir -p /var/run/nginx && \
-chown -R 1001:1001 /var/run/nginx && \
-chown -R 1001:1001 /var/log/nginx && \
-chown -R 1001:1001 /var/lib/nginx && \
-chown -R 1001:1001 /usr/share/nginx && \
-chown -R 1001:1001 /etc/nginx
-
-# Make the content of /opt/app-root and nginx folders owned by 1001 and drop privileges
-RUN chown -R 1001:1001 /opt/app-root
+# Chown /opt/app-root to the deployment user and drop privileges
+RUN chown -R 1001:1001 /opt/app-root && \
+chown -R 1001:1001 /var/log/nginx
 USER 1001
 
 # Set the default port for applications built using this image

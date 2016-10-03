@@ -18,9 +18,20 @@ cd /tmp/src
 
 if [ -f "Gemfile" ]; then
     echo "---> Installing dependencies with Bundler..."
-    bundle install
-fi
 
-echo "---> Building site with Jekyll..."
-jekyll build --destination ${DESTINATION}
+    if ! grep -Fq "json" Gemfile; then
+        # Add json to Gemfile
+        # Workaround for issue where json isn't installed
+        echo "gem 'json'" >> Gemfile
+    fi
+
+    # Run Bundler
+    bundle install
+
+    echo "---> Building site with Jekyll..."
+    bundle exec jekyll build --destination ${DESTINATION}
+else
+    echo "---> Building site with Jekyll..."
+    jekyll build --destination ${DESTINATION}
+fi
 

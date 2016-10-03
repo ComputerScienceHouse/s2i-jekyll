@@ -8,4 +8,4 @@
 #
 
 echo "---> Starting nginx web server..."
-exec nginx
+exec nginx -p /opt/app-root/var/lib/nginx -c /opt/app-root/etc/nginx/nginx.conf
