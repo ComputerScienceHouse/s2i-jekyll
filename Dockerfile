@@ -30,13 +30,17 @@ COPY ./etc/ /etc
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
 ln -sf /dev/stderr /var/log/nginx/error.log
 
-# Create the nginx pid directory
+# Create the nginx pid directory and chown all nginx directories to the run user
 RUN mkdir -p /var/run/nginx && \
-chown -R nginx:nginx /var/run/nginx
+chown -R 1001:1001 /var/run/nginx && \
+chown -R 1001:1001 /var/log/nginx && \
+chown -R 1001:1001 /var/lib/nginx && \
+chown -R 1001:1001 /usr/share/nginx && \
+chown -R 1001:1001 /etc/nginx
 
-# Make the content of /opt/app-root owned by nginx and drop privileges
-RUN chown -R nginx:nginx /opt/app-root
-USER nginx
+# Make the content of /opt/app-root and nginx folders owned by 1001 and drop privileges
+RUN chown -R 1001:1001 /opt/app-root
+USER 1001
 
 # Set the default port for applications built using this image
 EXPOSE 8080
