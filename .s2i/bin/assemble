@@ -14,10 +14,12 @@ if [[ "$1" == "-h" ]]; then
 fi
 
 DESTINATION=$(pwd)
-
-echo "---> Installing dependencies with Bundler..."
 cd /tmp/src
-bundle install
+
+if [ -f "Gemfile" ]; then
+    echo "---> Installing dependencies with Bundler..."
+    bundle install
+fi
 
 echo "---> Building site with Jekyll..."
 jekyll build --destination ${DESTINATION}
