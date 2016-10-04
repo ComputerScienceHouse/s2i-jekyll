@@ -38,8 +38,7 @@ ln -sf /dev/stdout /opt/app-root/var/log/nginx/access.log && \
 ln -sf /dev/stderr /opt/app-root/var/log/nginx/error.log
 
 # Chown /opt/app-root to the deployment user and drop privileges
-RUN chown -R 1001:1001 /opt/app-root && \
-chown -R 1001:1001 /var/log/nginx
+RUN chown -R 1001:0 /opt/app-root && chmod -R og+rwx /opt/app-root
 USER 1001
 
 # Set the default port for applications built using this image
