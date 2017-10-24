@@ -13,7 +13,7 @@ LABEL io.k8s.description="Platform for building Jekyll-based static sites" \
 
 # Install required packages
 RUN yum install -y epel-release && \
-yum install -y ruby ruby-devel nginx && \
+yum install -y ruby ruby-devel nginx nodejs && \
 yum clean all -y
 
 # Install Jekyll and Bundler with RubyGems
