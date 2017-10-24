@@ -17,7 +17,8 @@ yum install -y ruby ruby-devel nginx && \
 yum clean all -y
 
 # Install Jekyll and Bundler with RubyGems
-RUN gem install jekyll bundler
+RUN gem install jekyll -v 3.2.1
+RUN gem install bundler
 
 # Copy the S2I scripts to /usr/libexec/s2i, since openshift/base-centos7
 # image sets io.openshift.s2i.scripts-url label that way
